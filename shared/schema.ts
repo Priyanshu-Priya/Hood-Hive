@@ -16,6 +16,10 @@ export const projects = pgTable("projects", {
   description: text("description").notNull(),
   category: text("category").notNull(),
   location: jsonb("location").notNull(),
+  area: jsonb("area").$type<{
+    coordinates: { lat: number; lng: number }[];
+    color: string;
+  }>(),
   status: text("status").default("active").notNull(),
   userId: integer("user_id").notNull(),
   impactScore: integer("impact_score").default(0).notNull(),
@@ -50,6 +54,7 @@ export const insertProjectSchema = createInsertSchema(projects).pick({
   description: true,
   category: true,
   location: true,
+  area: true,
   image: true
 });
 

@@ -5,6 +5,25 @@ import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useLocation } from "wouter";
 import { useEffect } from "react";
+
+type Location = {
+  lat: number;
+  lng: number;
+};
+
+type Area = {
+  coordinates: Location[];
+  color: string;
+};
+
+type ProjectFormData = {
+  title: string;
+  description: string;
+  category: string;
+  location: Location;
+  area?: Area;
+  image: string;
+};
 import { Button } from "@/components/ui/button";
 import LocationPicker from "@/components/location-picker";
 import {
@@ -37,19 +56,20 @@ const categories = [
 export default function SubmitProject() {
   const [, setLocation] = useLocation();
 
-  const form = useForm({
+  const form = useForm<ProjectFormData>({
     resolver: zodResolver(insertProjectSchema),
     defaultValues: {
       title: "",
       description: "",
       category: "",
       location: { lat: 0, lng: 0 },
+      area: undefined,
       image: "",
     },
   });
 
   const mutation = useMutation({
-    mutationFn: async (data: unknown) => {
+    mutationFn: async (data: ProjectFormData) => {
       const res = await apiRequest("POST", "/api/projects", {
         ...data,
         createdAt: new Date().toISOString(),
@@ -139,22 +159,25 @@ export default function SubmitProject() {
                 )}
               />
 
-              <FormField
+                <FormField
                 control={form.control}
                 name="location"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Location</FormLabel>
-                    <FormControl>
-                      <LocationPicker
-                        value={field.value}
-                        onChange={field.onChange}
-                      />
-                    </FormControl>
-                    <FormMessage />
+                  <FormLabel>Location and Area</FormLabel>
+                  <FormControl>
+                    <LocationPicker
+                    value={field.value}
+                    onChange={field.onChange}
+                    area={form.getValues("area")}
+                    onAreaChange={(area) => form.setValue("area", area)}
+                    enableAreaSelection={true}
+                    />
+                  </FormControl>
+                  <FormMessage />
                   </FormItem>
                 )}
-              />
+                />
 
               <FormField
                 control={form.control}

@@ -42,9 +42,9 @@ export default function HomePage() {
   });
 
   return (
-    <div className="flex h-[calc(100vh-4rem)]">
+    <div className="flex h-screen">
       <div className="w-[400px] border-r p-6 overflow-y-auto">
-        <div className="space-y-4 mb-6">
+      <div className="space-y-4 mb-6">
           <div className="relative">
             <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
             <Input
@@ -79,7 +79,7 @@ export default function HomePage() {
         </div>
       </div>
 
-      <div className="flex-1 relative">
+        <div className="flex-1" style={{ height: 'calc(100vh - 4rem)' }}>
         <ProjectMap projects={filteredProjects} />
       </div>
     </div>

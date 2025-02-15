@@ -1,6 +1,11 @@
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { useRoute, useLocation } from "wouter";
 import { Project, Comment } from "@shared/schema";
+
+type Location = {
+  lat: number;
+  lng: number;
+};
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { insertCommentSchema } from "@shared/schema";
@@ -239,10 +244,10 @@ export default function ProjectDetails() {
                 </div>
                 <div className="flex items-center gap-2">
                   <MapPin className="h-4 w-4" />
-                  <span className="text-sm">
-                    {project.location.lat.toFixed(6)},{" "}
-                    {project.location.lng.toFixed(6)}
-                  </span>
+                    <span className="text-sm">
+                    {(project.location as Location).lat.toFixed(6)},{" "}
+                    {(project.location as Location).lng.toFixed(6)}
+                    </span>
                 </div>
               </div>
             </CardContent>

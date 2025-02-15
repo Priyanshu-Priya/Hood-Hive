@@ -1,13 +1,22 @@
 import { useEffect, useState } from "react";
-import { GoogleMap, useJsApiLoader, Marker, InfoWindow } from "@react-google-maps/api";
+import { GoogleMap, Marker, InfoWindow, Polygon } from "@react-google-maps/api";
+import { useMapsLoader } from "@/lib/googleMaps";
 import { Project } from "@shared/schema";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "wouter";
 
+type Location = {
+  lat: number;
+  lng: number;
+};
+
 const mapContainerStyle = {
   width: "100%",
   height: "100%",
+  position: "absolute" as const,
+  top: 0,
+  left: 0
 };
 
 const defaultCenter = {
@@ -16,16 +25,16 @@ const defaultCenter = {
 };
 
 export default function ProjectMap({ projects }: { projects: Project[] }) {
-  const { isLoaded } = useJsApiLoader({
-    id: 'google-map-script',
-    googleMapsApiKey: "" // Google Maps will work in development mode without an API key
-  });
+  const { isLoaded } = useMapsLoader();
+  console.log('Maps loaded:', isLoaded, 'API Key:', import.meta.env.VITE_GOOGLE_MAPS_API_KEY);
+
+
 
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [infoPosition, setInfoPosition] = useState<Location | null>(null);
   const [center, setCenter] = useState(defaultCenter);
 
   useEffect(() => {
-    // Get user's location
     navigator.geolocation.getCurrentPosition((pos) => {
       setCenter({
         lat: pos.coords.latitude,
@@ -34,11 +43,27 @@ export default function ProjectMap({ projects }: { projects: Project[] }) {
     });
   }, []);
 
+  const handleMarkerClick = (project: Project) => {
+    setSelectedProject(project);
+    setInfoPosition(project.location as Location);
+  };
+
+  const handlePolygonClick = (project: Project, event: google.maps.PolyMouseEvent) => {
+    setSelectedProject(project);
+    if (event.latLng) {
+      setInfoPosition({
+        lat: event.latLng.lat(),
+        lng: event.latLng.lng()
+      });
+    }
+  };
+
   if (!isLoaded) return <div>Loading map...</div>;
 
   return (
-    <GoogleMap
-      mapContainerStyle={mapContainerStyle}
+    <div style={{ width: '100%', height: '100%', position: 'relative' }}>
+      <GoogleMap
+        mapContainerStyle={mapContainerStyle}
       center={center}
       zoom={11}
       options={{
@@ -52,23 +77,34 @@ export default function ProjectMap({ projects }: { projects: Project[] }) {
       }}
     >
       {projects.map((project) => (
-        <Marker
-          key={project.id}
-          position={{
-            lat: project.location.lat,
-            lng: project.location.lng,
-          }}
-          onClick={() => setSelectedProject(project)}
-        />
+        <div key={project.id}>
+          <Marker
+            position={project.location as Location}
+            onClick={() => handleMarkerClick(project)}
+          />
+          
+          {project.area && (
+            <Polygon
+              paths={project.area.coordinates}
+              options={{
+                fillColor: project.area.color,
+                fillOpacity: 0.3,
+                strokeWeight: 2,
+                clickable: true,
+              }}
+              onClick={(e) => handlePolygonClick(project, e)}
+            />
+          )}
+        </div>
       ))}
 
-      {selectedProject && (
+      {selectedProject && infoPosition && (
         <InfoWindow
-          position={{
-            lat: selectedProject.location.lat,
-            lng: selectedProject.location.lng,
+          position={infoPosition}
+          onCloseClick={() => {
+            setSelectedProject(null);
+            setInfoPosition(null);
           }}
-          onCloseClick={() => setSelectedProject(null)}
         >
           <Card className="w-64">
             <CardContent className="p-4">
@@ -87,5 +123,6 @@ export default function ProjectMap({ projects }: { projects: Project[] }) {
         </InfoWindow>
       )}
     </GoogleMap>
+    </div>
   );
 }
