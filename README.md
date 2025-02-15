@@ -33,6 +33,43 @@ Hood Hive is a community-driven platform that allows users to explore, submit, a
    npm start
    ```
 
+## Environment Setup
+1. Create a `.env` file in the root directory
+2. Add the following environment variables:
+
+```properties
+# Firebase Configuration
+VITE_FIREBASE_PROJECT_ID=your-project-id
+VITE_FIREBASE_PRIVATE_KEY="your-private-key"
+VITE_FIREBASE_CLIENT_EMAIL=your-client-email@example.com
+
+# Google Maps Configuration
+VITE_GOOGLE_MAPS_API_KEY=your-google-maps-api-key
+
+# Session Configuration
+SESSION_SECRET=your-session-secret
+```
+
+### Getting the Required Keys
+
+1. **Firebase Configuration**:
+   - Create a project in [Firebase Console](https://console.firebase.google.com)
+   - Go to Project Settings > Service Accounts
+   - Generate a new Private Key
+   - Copy the values to your .env file
+
+2. **Google Maps API Key**:
+   - Visit [Google Cloud Console](https://console.cloud.google.com)
+   - Create a new project or select existing one
+   - Enable Maps JavaScript API
+   - Create credentials (API key)
+   - Add the key to your .env file
+
+3. **Session Secret**:
+   - Generate a strong random string for session security
+
+**Note**: Never commit the `.env` file to version control. The above values are just examples.
+
 ## Folder Structure
 ```
 hood-hive/
