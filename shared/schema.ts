@@ -25,7 +25,9 @@ export const projects = pgTable("projects", {
   impactScore: integer("impact_score").default(0).notNull(),
   votes: integer("votes").default(0).notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
-  image: text("image")
+  image: text("image"),
+  donationRequirement: integer("donation_requirement"),
+  volunteerRequirement: integer("volunteer_requirement")
 });
 
 export const projectVotes = pgTable("project_votes", {
@@ -55,7 +57,9 @@ export const insertProjectSchema = createInsertSchema(projects).pick({
   category: true,
   location: true,
   area: true,
-  image: true
+  image: true,
+  donationRequirement: true,
+  volunteerRequirement: true
 });
 
 export const insertCommentSchema = createInsertSchema(comments).pick({

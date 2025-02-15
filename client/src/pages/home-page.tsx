@@ -42,46 +42,49 @@ export default function HomePage() {
   });
 
   return (
-    <div className="flex h-screen">
-      <div className="w-[400px] border-r p-6 overflow-y-auto">
-      <div className="space-y-4 mb-6">
-          <div className="relative">
-            <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Search projects..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="pl-10"
-            />
+    <div className="flex h-[calc(100vh-4rem)]">
+      <div className="w-[400px] border-r bg-background overflow-hidden flex flex-col">
+        <div className="p-6 flex flex-col h-full">
+          <div className="space-y-4 mb-6 flex-none">
+            <div className="relative">
+              <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Search projects..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="pl-10"
+              />
+            </div>
+            <Select value={category} onValueChange={setCategory}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select category" />
+              </SelectTrigger>
+              <SelectContent>
+                {categories.map((cat) => (
+                  <SelectItem key={cat} value={cat}>
+                    {cat}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
-          <Select value={category} onValueChange={setCategory}>
-            <SelectTrigger>
-              <SelectValue placeholder="Select category" />
-            </SelectTrigger>
-            <SelectContent>
-              {categories.map((cat) => (
-                <SelectItem key={cat} value={cat}>
-                  {cat}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
 
-        <div className="space-y-4">
-          {isLoading ? (
-            <div>Loading projects...</div>
-          ) : (
-            filteredProjects.map((project) => (
-              <ProjectCard key={project.id} project={project} />
-            ))
-          )}
+          <div className="space-y-4 overflow-y-auto flex-1">
+            {isLoading ? (
+              <div>Loading projects...</div>
+            ) : (
+              filteredProjects.map((project) => (
+                <ProjectCard key={project.id} project={project} />
+              ))
+            )}
+          </div>
         </div>
       </div>
 
-        <div className="flex-1" style={{ height: 'calc(100vh - 4rem)' }}>
+      <div className="flex-1">
         <ProjectMap projects={filteredProjects} />
       </div>
     </div>
+
   );
 }

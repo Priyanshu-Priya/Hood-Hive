@@ -23,6 +23,8 @@ type ProjectFormData = {
   location: Location;
   area?: Area;
   image: string;
+  donationRequirement?: number;
+  volunteerRequirement?: number;
 };
 import { Button } from "@/components/ui/button";
 import LocationPicker from "@/components/location-picker";
@@ -62,9 +64,11 @@ export default function SubmitProject() {
       title: "",
       description: "",
       category: "",
-      location: {  lat: 28.6139, lng: 77.2088 },
-      area: undefined,
-      image: "",
+        location: {  lat: 28.6139, lng: 77.2088 },
+        area: undefined,
+        image: "",
+        donationRequirement: 0,
+        volunteerRequirement: 0
     },
   });
 
@@ -92,7 +96,7 @@ export default function SubmitProject() {
   }, [form]);
 
   return (
-    <div className="container py-8">
+    <div className="container mx-auto max-w-7xl py-8 px-4">
       <Card className="max-w-2xl mx-auto">
         <CardHeader>
           <CardTitle>Submit a New Project</CardTitle>
@@ -193,11 +197,51 @@ export default function SubmitProject() {
                 )}
               />
 
-              <Button
+                <FormField
+                  control={form.control}
+                  name="donationRequirement"
+                  render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Donation Requirement (₹)</FormLabel>
+                    <FormControl>
+                    <Input 
+                      type="number"
+                      min="0"
+                      {...field}
+                      onChange={e => field.onChange(e.target.valueAsNumber)}
+                      placeholder="Enter amount needed"
+                    />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="volunteerRequirement"
+                  render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Number of Volunteers Needed</FormLabel>
+                    <FormControl>
+                    <Input 
+                      type="number"
+                      min="0"
+                      {...field}
+                      onChange={e => field.onChange(e.target.valueAsNumber)}
+                      placeholder="Enter number of volunteers needed"
+                    />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                  )}
+                />
+
+                <Button
                 type="submit"
                 className="w-full"
                 disabled={mutation.isPending}
-              >
+                >
                 Submit Project
               </Button>
             </form>
