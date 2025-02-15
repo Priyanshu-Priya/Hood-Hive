@@ -1,0 +1,24 @@
+# Ignore node modules
+node_modules/
+ 
+# Ignore compiled TypeScript files
+dist/
+
+# macOS system files
+.DS_Store
+
+# Ignore tarball files
+*.tar.gz
+
+# Environment variables
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+
+# Vite config backups (if any)
+vite.config.ts.*
+
+# Public build files (optional, if generated dynamically)
+server/public/
