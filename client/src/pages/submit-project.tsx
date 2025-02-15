@@ -62,7 +62,7 @@ export default function SubmitProject() {
       title: "",
       description: "",
       category: "",
-      location: { lat: 0, lng: 0 },
+      location: {  lat: 28.6139, lng: 77.2088 },
       area: undefined,
       image: "",
     },

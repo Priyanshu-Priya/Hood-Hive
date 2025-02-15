@@ -80,7 +80,7 @@ export default function LocationPicker({
       <GoogleMap
         mapContainerStyle={mapContainerStyle}
         center={value}
-        zoom={13}
+        zoom={5}
         onClick={handleClick}
       >
         <Marker position={value} />

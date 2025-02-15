@@ -20,8 +20,7 @@ const mapContainerStyle = {
 };
 
 const defaultCenter = {
-  lat: 40.7128,
-  lng: -74.006,
+  lat: 28.6139, lng: 77.2088
 };
 
 export default function ProjectMap({ projects }: { projects: Project[] }) {
@@ -65,7 +64,7 @@ export default function ProjectMap({ projects }: { projects: Project[] }) {
       <GoogleMap
         mapContainerStyle={mapContainerStyle}
       center={center}
-      zoom={11}
+      zoom={6}
       options={{
         styles: [
           {
