@@ -3,11 +3,14 @@
 ## Overview
 Hood Hive is a community-driven platform that allows users to explore, submit, and engage with local projects aimed at improving neighborhoods. The website features an interactive map, project submission flow, voting system, and AI-powered engagement tracking.
 
-## Features to be Implemented
+## Features Implemented
 - **Interactive Map:** Displays community projects with categorized pins.
 - **Project Listings:** View and filter projects by category, status, or impact score.
 - **Project Details Page:** Includes a description, media attachments, progress tracking, and community discussions.
 - **User Dashboard:** Tracks personal contributions, points, and recommendations.
+
+
+## Features to be Implemented
 - **Gamification Elements:** Earn points, badges, and participate in challenges.
 - **Admin Panel:** Manage submissions, moderate comments, and track community engagement metrics.
 
@@ -99,4 +102,3 @@ hood-hive/
 
 ## License
 This project is licensed under the MIT License.
-
